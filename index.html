@@ -1,0 +1,2791 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Learning Guide — DMC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+/* =============================================
+   DESIGN TOKENS — customize here
+   ============================================= */
+:root {
+  --navy-900: #060C24;
+  --navy-800: #0B1437;
+  --navy-700: #0F1D50;
+  --navy-600: #152268;
+  --blue-500: #2563EB;
+  --blue-400: #3B82F6;
+  --cyan-400: #22D3EE;
+  --cyan-300: #67E8F9;
+  --purple-400: #A78BFA;
+  --white: #FFFFFF;
+  --gray-50: #F8FAFF;
+  --gray-100: #EEF2FF;
+  --gray-200: #E0E7FF;
+  --gray-500: #6B7280;
+  --gray-700: #374151;
+  --gray-900: #111827;
+  --text-body: #374151;
+  --text-muted: #6B7280;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 32px rgba(37,99,235,0.10);
+  --shadow-lg: 0 20px 60px rgba(37,99,235,0.15);
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', 'Plus Jakarta Sans', sans-serif;
+  --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =============================================
+   RESET & BASE
+   ============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  color: var(--text-body);
+  background: var(--white);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { cursor: pointer; font-family: var(--font-body); border: none; background: none; }
+
+/* =============================================
+   TYPOGRAPHY
+   ============================================= */
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.25; }
+h1 { font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 700; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 700; }
+h3 { font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 600; }
+h4 { font-size: 1rem; font-weight: 600; }
+p { font-size: 1rem; }
+
+/* =============================================
+   UTILITIES
+   ============================================= */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; }
+.section--alt { background: var(--gray-50); }
+.label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue-400);
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 100px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+}
+.label--cyan { color: var(--cyan-400); background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.25); }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-header p { font-size: 1.05rem; color: var(--text-muted); max-width: 580px; margin: 12px auto 0; }
+.gradient-text {
+  background: linear-gradient(135deg, var(--blue-400) 0%, var(--cyan-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =============================================
+   NAVBAR
+   ============================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(250,250,250,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(17,24,39,0.08);
+  transition: var(--transition);
+}
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 32px;
+}
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #111827;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.03em;
+}
+.navbar__logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #38BDF8, #2563EB);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 10px 24px rgba(37,99,235,0.18);
+}
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+.navbar__links a {
+  color: rgba(17,24,39,0.62);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition);
+  white-space: nowrap;
+}
+.navbar__links a:hover { color: #111827; }
+.navbar__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0B1020;
+  color: var(--white);
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+  box-shadow: 0 12px 30px rgba(11,16,32,0.16);
+}
+.navbar__cta:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 16px 36px rgba(11,16,32,0.2); }
+.navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  cursor: pointer;
+}
+.navbar__hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #111827;
+  border-radius: 2px;
+  transition: var(--transition);
+}
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 64px 0 0;
+  background: rgba(250,250,250,0.98);
+  z-index: 998;
+  padding: 32px 24px;
+  flex-direction: column;
+  gap: 24px;
+  border-top: 1px solid rgba(17,24,39,0.08);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: rgba(17,24,39,0.78);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(17,24,39,0.08);
+}
+
+/* =============================================
+   HERO — scroll morph image ring, closer to reference
+   ============================================= */
+.hero {
+  /* Extra scroll height gives the morph animation room to complete while
+     the visual stage stays fixed, so the second headline/buttons no longer
+     appear cut off halfway down the page. */
+  min-height: 175svh;
+  height: 175svh;
+  position: relative;
+  overflow: visible;
+  background: #fafafa;
+  isolation: isolate;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 47%, rgba(255,255,255,0.96) 0%, rgba(250,250,250,0.86) 44%, rgba(244,246,248,0.70) 100%),
+    radial-gradient(circle at 48% 54%, rgba(15,23,42,0.035), transparent 34%);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero__stage {
+  position: relative;
+  z-index: 1;
+  position: sticky;
+  top: 64px;
+  min-height: calc(100svh - 64px);
+  height: calc(100svh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 24px;
+  overflow: hidden;
+  perspective: 1000px;
+  background: #fafafa;
+}
+.hero__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 1px;
+  z-index: 1;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+  pointer-events: none;
+}
+.hero__tile {
+  --tile-width: 68px;
+  --tile-height: 92px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--tile-width);
+  height: var(--tile-height);
+  margin-left: calc(var(--tile-width) / -2);
+  margin-top: calc(var(--tile-height) / -2);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #eef1f4;
+  box-shadow:
+    0 18px 36px rgba(15, 23, 42, 0.10),
+    0 2px 8px rgba(15, 23, 42, 0.05);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.hero__tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.86) contrast(0.96) brightness(1.04);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+}
+.hero__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(15,23,42,0.10));
+  pointer-events: none;
+}
+.hero__tile:hover img {
+  transform: scale(1.06);
+  filter: saturate(1.02) contrast(1) brightness(1);
+}
+.hero__copy {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+  pointer-events: none;
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22,1,0.36,1), filter 0.55s ease;
+}
+.hero__copy--intro {
+  transform: translateY(0);
+}
+.hero__copy--detail {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  width: min(760px, calc(100% - 40px));
+  transform: translate(-50%, 24px);
+  opacity: 0;
+  filter: blur(10px);
+}
+.hero__title {
+  color: #202636;
+  font-family: 'Inter', var(--font-body);
+  font-size: clamp(2.15rem, 4.15vw, 4rem);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+  margin-bottom: 18px;
+}
+.hero__title--secondary {
+  font-size: clamp(2.25rem, 4vw, 4.3rem);
+  font-weight: 680;
+  letter-spacing: 0.035em;
+  word-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.hero__micro {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: rgba(31,41,55,0.36);
+  font-family: 'Inter', var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.hero__micro::before,
+.hero__micro::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: rgba(31,41,55,0.14);
+}
+.hero__subtitle {
+  max-width: 720px;
+  margin: 0 auto 26px;
+  color: rgba(31,41,55,0.64);
+  font-family: 'Inter', var(--font-body);
+  font-size: clamp(1rem, 1.4vw, 1.16rem);
+  line-height: 1.72;
+  letter-spacing: -0.01em;
+}
+.hero__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  pointer-events: auto;
+}
+.hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 23px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 750;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.hero__button--dark {
+  background: #0B1020;
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(11,16,32,0.16);
+}
+.hero__button--light {
+  background: rgba(255,255,255,0.76);
+  color: #1F2937;
+  border: 1px solid rgba(31,41,55,0.10);
+}
+.hero__button:hover { transform: translateY(-2px); }
+.hero__button--dark:hover { box-shadow: 0 18px 38px rgba(11,16,32,0.22); }
+.hero__scroll {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  color: rgba(31,41,55,0.40);
+  font-family: 'Inter', var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+}
+.hero.is-morphed .hero__copy--intro {
+  opacity: 0;
+  transform: translateY(-20px);
+  filter: blur(10px);
+}
+.hero.is-morphed .hero__copy--detail {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  filter: blur(0);
+}
+.hero.is-morphed .hero__scroll { opacity: 0; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease forwards;
+}
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+.delay-4 { animation-delay: 0.6s; }
+/* =============================================
+   INTRO
+   ============================================= */
+.intro__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.intro__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.intro__card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.intro__card:hover {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+.intro__card-icon {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+.intro__card h4 { margin-bottom: 6px; color: var(--gray-900); }
+.intro__card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.55; }
+.intro__card--wide {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(34,211,238,0.04));
+  border-color: rgba(59,130,246,0.25);
+}
+.intro__text p { color: var(--text-muted); margin-top: 14px; line-height: 1.75; }
+.intro__text .highlight {
+  background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(34,211,238,0.06));
+  border-left: 3px solid var(--blue-400);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+  margin-top: 24px;
+  font-size: 0.95rem;
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+/* =============================================
+   MODULES (TABS)
+   ============================================= */
+.modules__tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--gray-100);
+  border-radius: 100px;
+  padding: 5px;
+  width: fit-content;
+  margin: 0 auto 52px;
+}
+.modules__tab {
+  padding: 10px 28px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+.modules__tab.active {
+  background: var(--navy-800);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(6,12,36,0.25);
+}
+.modules__panel { display: none; }
+.modules__panel.active { display: block; }
+.modules__note {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.modules__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.module-card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  transition: all var(--transition);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue-400), var(--cyan-400));
+  transform: scaleX(0);
+  transition: transform var(--transition);
+  transform-origin: left;
+}
+.module-card:hover::before { transform: scaleX(1); }
+.module-card:hover {
+  border-color: rgba(59,130,246,0.35);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+}
+.module-card__num {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue-400);
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.module-card__app {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gray-100);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 14px;
+}
+.module-card h3 { color: var(--gray-900); margin-bottom: 10px; font-size: 1.05rem; }
+.module-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+.module-card__time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 18px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--blue-400);
+}
+
+/* =============================================
+   USE CASES (accordion tasks)
+   ============================================= */
+.usecases__level {
+  margin-bottom: 64px;
+}
+.usecases__level-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.usecases__level-badge {
+  padding: 5px 16px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.usecases__level-badge--beginner {
+  background: rgba(34,211,238,0.12);
+  color: var(--cyan-400);
+  border: 1px solid rgba(34,211,238,0.25);
+}
+.usecases__level-badge--intermediate {
+  background: rgba(167,139,250,0.12);
+  color: var(--purple-400);
+  border: 1px solid rgba(167,139,250,0.25);
+}
+.usecases__level-line { flex: 1; height: 1px; background: var(--gray-200); }
+.task-item {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.task-item:hover { border-color: rgba(59,130,246,0.3); }
+.task-item.open { border-color: rgba(59,130,246,0.4); box-shadow: var(--shadow-md); }
+.task-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.task-header__num {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--blue-500), #1d4ed8);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.task-header__meta { flex: 1; }
+.task-header__meta h3 { font-size: 1rem; color: var(--gray-900); }
+.task-header__app { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.task-header__time {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--blue-400);
+  white-space: nowrap;
+  padding: 0 16px;
+}
+.task-header__chevron {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: transform var(--transition), background var(--transition);
+  flex-shrink: 0;
+}
+.task-item.open .task-header__chevron {
+  transform: rotate(180deg);
+  background: rgba(59,130,246,0.12);
+  color: var(--blue-400);
+}
+.task-body {
+  display: none;
+  padding: 0 24px 28px;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 24px;
+}
+.task-item.open .task-body { display: block; }
+.task-steps { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
+.task-step {
+  display: flex;
+  gap: 16px;
+}
+.task-step__num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  border: 2px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.task-step__content h4 { font-size: 0.9rem; color: var(--gray-900); margin-bottom: 6px; }
+.task-step__content p { font-size: 0.875rem; color: var(--text-muted); }
+.task-step__location {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  color: var(--gray-700);
+  margin-top: 6px;
+}
+.prompt-box {
+  background: var(--navy-800);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-top: 8px;
+  position: relative;
+}
+.prompt-box__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan-300);
+  margin-bottom: 8px;
+}
+.prompt-box__text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+  white-space: pre-line;
+}
+.prompt-box__copy {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: rgba(59,130,246,0.2);
+  border: 1px solid rgba(59,130,246,0.3);
+  color: var(--cyan-300);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.prompt-box__copy:hover { background: rgba(59,130,246,0.4); }
+.result-box {
+  background: rgba(34,211,238,0.05);
+  border: 1px solid rgba(34,211,238,0.2);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-top: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.result-box__icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.result-box__text { font-size: 0.875rem; color: var(--gray-700); }
+.tip-box {
+  background: rgba(59,130,246,0.05);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--gray-700);
+}
+.tip-box strong { color: var(--blue-400); }
+
+/* =============================================
+   PROMPTING GUIDE
+   ============================================= */
+.prompt-guide__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.prompt-guide-card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.prompt-guide-card:hover {
+  border-color: rgba(59,130,246,0.3);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.prompt-guide-card__header {
+  padding: 20px 22px 14px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.prompt-guide-card__header h4 { color: var(--gray-900); font-size: 0.95rem; margin-top: 6px; }
+.prompt-guide-card__body { padding: 16px 22px 20px; }
+.prompt-guide-card__body .prompt-box { margin-top: 0; }
+.prompt-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(59,130,246,0.1);
+  color: var(--blue-400);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+.prompt-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.prompt-tip-item {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all var(--transition);
+}
+.prompt-tip-item:hover {
+  border-color: rgba(59,130,246,0.3);
+  box-shadow: var(--shadow-sm);
+}
+.prompt-tip-item__icon { font-size: 1.5rem; margin-bottom: 10px; }
+.prompt-tip-item h4 { font-size: 0.88rem; color: var(--gray-900); margin-bottom: 6px; }
+.prompt-tip-item p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+
+/* =============================================
+   DO & DON'T — not in source, use disclaimer
+   BEST PRACTICES
+   ============================================= */
+.best-practices__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.bp-list {
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.bp-list__header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.bp-list__header h3 { font-size: 1rem; }
+.bp-list--do .bp-list__header { background: rgba(34,211,238,0.06); }
+.bp-list--dont .bp-list__header { background: rgba(239,68,68,0.04); }
+.bp-list__items { padding: 16px 24px 20px; }
+.bp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 0.88rem;
+  color: var(--gray-700);
+}
+.bp-item:last-child { border-bottom: none; }
+.bp-item__icon {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.bp-list--do .bp-item__icon { background: rgba(34,211,238,0.15); color: #0891b2; }
+.bp-list--dont .bp-item__icon { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+/* =============================================
+   FAQ
+   ============================================= */
+.faq__list { max-width: 760px; margin: 0 auto; }
+.faq-item {
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+.faq-item:hover { border-color: rgba(59,130,246,0.3); }
+.faq-item.open { border-color: rgba(59,130,246,0.4); }
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--gray-900);
+}
+.faq-icon {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: transform var(--transition), background var(--transition);
+  flex-shrink: 0;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+  background: rgba(59,130,246,0.12);
+  color: var(--blue-400);
+}
+.faq-a {
+  display: none;
+  padding: 0 22px 18px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 14px;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* =============================================
+   CTA CLOSING
+   ============================================= */
+.closing {
+  background: var(--navy-800);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 96px 0;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(37,99,235,0.18) 0%, transparent 55%),
+    radial-gradient(circle at 75% 40%, rgba(34,211,238,0.1) 0%, transparent 45%);
+  pointer-events: none;
+}
+.closing__inner { position: relative; z-index: 1; }
+.closing h2 { color: var(--white); margin-bottom: 16px; }
+.closing p { color: rgba(255,255,255,0.6); font-size: 1.05rem; max-width: 520px; margin: 0 auto 36px; }
+.closing__actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer {
+  background: var(--navy-900);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 36px 0;
+}
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer__copy {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.35);
+}
+.footer__links {
+  display: flex;
+  gap: 24px;
+}
+.footer__links a {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.4);
+  transition: color var(--transition);
+}
+.footer__links a:hover { color: rgba(255,255,255,0.8); }
+
+/* =============================================
+   SCROLL REVEAL
+   ============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+  .hero__subtitle { margin-left: auto; margin-right: auto; }
+  .modules__grid { grid-template-columns: repeat(2, 1fr); }
+  .intro__grid { grid-template-columns: 1fr; gap: 40px; }
+  .prompt-tips-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .section { padding: 64px 0; }
+  .navbar__links { display: none; }
+  .navbar__cta { display: none; }
+  .navbar__hamburger { display: flex; }
+  .modules__grid { grid-template-columns: 1fr; }
+  .prompt-guide__grid { grid-template-columns: 1fr; }
+  .best-practices__grid { grid-template-columns: 1fr; }
+  .prompt-tips-grid { grid-template-columns: 1fr; }
+  .intro__cards { grid-template-columns: 1fr; }
+  .task-header__time { display: none; }
+  .footer__inner { flex-direction: column; text-align: center; }
+  .footer__links { justify-content: center; }
+}
+@media (max-width: 480px) {
+  .modules__tabs { flex-direction: column; border-radius: var(--radius-md); width: auto; }
+  .modules__tab { border-radius: var(--radius-sm); text-align: center; }
+}
+
+
+/* Hero image-ring responsive refinements */
+@media (max-width: 1024px) {
+  .hero__stage { height: calc(100svh - 64px); }
+  .hero__tile { --tile-width: 62px; --tile-height: 84px; }
+}
+@media (max-width: 768px) {
+  .hero { min-height: 165svh; height: 165svh; }
+  .hero__stage { padding: 44px 18px; min-height: calc(100svh - 64px); height: calc(100svh - 64px); }
+  .hero__title { font-size: clamp(2rem, 9vw, 3rem); }
+  .hero__copy--detail { top: 10%; }
+  .hero__micro { font-size: 0.66rem; letter-spacing: 0.22em; gap: 10px; }
+  .hero__micro::before, .hero__micro::after { width: 22px; }
+  .hero__scroll { bottom: 18px; }
+}
+@media (max-width: 480px) {
+  .hero__tile { --tile-width: 54px; --tile-height: 74px; }
+  .hero__copy--detail { top: 9%; }
+  .hero__subtitle { font-size: 0.92rem; line-height: 1.65; }
+  .hero__button { width: 100%; max-width: 240px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__tile, .animate-in { animation: none !important; opacity: 1; }
+  .hero__copy { transition: none !important; }
+}
+
+/* =============================================
+   VAONIS-INSPIRED MINIMAL THEME OVERRIDES
+   Clean editorial palette, less neon, more premium whitespace
+   ============================================= */
+:root {
+  --navy-900: #0E1117;
+  --navy-800: #151923;
+  --navy-700: #202633;
+  --navy-600: #2E3545;
+  --blue-500: #1F2937;
+  --blue-400: #374151;
+  --cyan-400: #8B8F98;
+  --cyan-300: #C5C8CF;
+  --purple-400: #9A9286;
+  --white: #FFFFFF;
+  --gray-50: #F7F5F1;
+  --gray-100: #EFECE6;
+  --gray-200: #DDD8CF;
+  --gray-500: #8A877F;
+  --gray-700: #3D403F;
+  --gray-900: #111318;
+  --text-body: #333638;
+  --text-muted: #75716A;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 34px;
+  --shadow-sm: 0 8px 20px rgba(17,19,24,0.04);
+  --shadow-md: 0 18px 44px rgba(17,19,24,0.07);
+  --shadow-lg: 0 28px 80px rgba(17,19,24,0.10);
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+  background: #F7F5F1;
+  color: var(--text-body);
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4 {
+  color: var(--gray-900);
+  font-weight: 560;
+  letter-spacing: -0.045em;
+}
+
+h2 { font-size: clamp(2.05rem, 4.4vw, 4.5rem); line-height: 1.05; }
+h3 { font-weight: 560; }
+p { color: var(--text-muted); }
+
+.container { max-width: 1180px; }
+.section { padding: 132px 0; background: #F7F5F1; }
+.section--alt { background: #FFFFFF; }
+
+.section-header { margin-bottom: 74px; }
+.section-header p {
+  max-width: 660px;
+  margin-top: 22px;
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  line-height: 1.8;
+  color: #68645E;
+}
+
+.label,
+.label--cyan {
+  color: #7B776F;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 24px;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  font-weight: 650;
+}
+
+.label::before,
+.label--cyan::before {
+  content: "";
+  display: inline-block;
+  width: 34px;
+  height: 1px;
+  background: #B8B2A7;
+  vertical-align: middle;
+  margin-right: 13px;
+}
+
+.gradient-text {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #111318;
+}
+
+/* Navigation */
+.navbar {
+  background: rgba(247,245,241,0.84);
+  border-bottom: 1px solid rgba(17,19,24,0.08);
+  box-shadow: none;
+}
+.navbar__inner { height: 70px; }
+.navbar__logo {
+  color: #111318;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+}
+.navbar__logo-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #111318;
+  box-shadow: none;
+  font-size: 0.85rem;
+}
+.navbar__links a {
+  color: rgba(17,19,24,0.56);
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+.navbar__links a:hover { color: #111318; }
+.navbar__cta,
+.btn-primary,
+.hero__button--dark {
+  background: #111318;
+  color: #FFFFFF;
+  box-shadow: none;
+  border: 1px solid #111318;
+}
+.navbar__cta:hover,
+.btn-primary:hover,
+.hero__button--dark:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(17,19,24,0.12);
+  opacity: 1;
+}
+.btn-secondary,
+.hero__button--light {
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(17,19,24,0.12);
+  color: #111318;
+  box-shadow: none;
+}
+.btn-secondary:hover,
+.hero__button--light:hover {
+  background: #FFFFFF;
+}
+.mobile-menu { background: #F7F5F1; }
+.mobile-menu a { color: rgba(17,19,24,0.72); border-bottom-color: rgba(17,19,24,0.08); }
+.navbar__hamburger span { background: #111318; }
+
+/* Intro */
+.intro__grid { gap: 86px; align-items: start; }
+.intro__text p {
+  font-size: 1.03rem;
+  line-height: 1.86;
+  color: #68645E;
+}
+.intro__text .highlight {
+  background: transparent;
+  border-left: 1px solid #111318;
+  border-radius: 0;
+  padding: 0 0 0 22px;
+  color: #343434;
+  font-weight: 450;
+}
+.intro__cards { gap: 18px; }
+.intro__card,
+.module-card,
+.task-item,
+.prompt-guide-card,
+.prompt-tip-item,
+.bp-list,
+.faq-item {
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(17,19,24,0.10);
+  border-radius: 22px;
+  box-shadow: none;
+}
+.intro__card:hover,
+.module-card:hover,
+.prompt-guide-card:hover,
+.prompt-tip-item:hover,
+.task-item:hover,
+.faq-item:hover {
+  border-color: rgba(17,19,24,0.18);
+  box-shadow: 0 24px 70px rgba(17,19,24,0.06);
+  transform: translateY(-3px);
+}
+.intro__card-icon,
+.prompt-tip-item__icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(17,19,24,0.12);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #111318;
+  margin-bottom: 18px;
+}
+.intro__card h4,
+.prompt-tip-item h4 { font-weight: 600; }
+.intro__card p,
+.prompt-tip-item p { color: #716D66; }
+.intro__card--wide {
+  background: #111318;
+  border-color: #111318;
+}
+.intro__card--wide h4,
+.intro__card--wide p { color: #FFFFFF; }
+.intro__card--wide .intro__card-icon {
+  color: #FFFFFF;
+  border-color: rgba(255,255,255,0.22);
+}
+
+/* Modules */
+.modules__tabs {
+  background: rgba(17,19,24,0.06);
+  padding: 4px;
+  border-radius: 999px;
+  margin-bottom: 58px;
+}
+.modules__tab {
+  color: rgba(17,19,24,0.58);
+  font-weight: 560;
+  padding: 11px 30px;
+}
+.modules__tab.active {
+  background: #111318;
+  color: #FFFFFF;
+  box-shadow: none;
+}
+.modules__note {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(17,19,24,0.12);
+  border-bottom: 1px solid rgba(17,19,24,0.12);
+  border-radius: 0;
+  color: #68645E;
+  padding: 18px 0;
+}
+.modules__grid { gap: 22px; }
+.module-card { padding: 32px 28px; }
+.module-card::before {
+  height: 1px;
+  background: #111318;
+}
+.module-card__num {
+  color: #8A877F;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+}
+.module-card__app {
+  background: transparent;
+  border: 1px solid rgba(17,19,24,0.12);
+  border-radius: 999px;
+  padding: 4px 12px;
+  color: #4A4A46;
+  font-weight: 560;
+}
+.module-card h3 {
+  color: #111318;
+  font-size: 1.08rem;
+  margin-top: 4px;
+}
+.module-card p { color: #746F67; }
+.module-card__time {
+  color: #111318;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* Task accordions */
+.usecases__level-title { margin-bottom: 34px; }
+.usecases__level-badge {
+  background: transparent !important;
+  color: #111318 !important;
+  border: 1px solid rgba(17,19,24,0.16) !important;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+}
+.usecases__level-line { background: rgba(17,19,24,0.12); }
+.task-header { padding: 26px 28px; }
+.task-header__num {
+  background: #111318;
+  color: #FFFFFF;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.task-header__meta h3 { color: #111318; }
+.task-header__app,
+.task-header__time { color: #77736C; }
+.task-header__chevron,
+.faq-icon {
+  background: transparent;
+  border: 1px solid rgba(17,19,24,0.12);
+  color: #111318;
+}
+.task-item.open {
+  border-color: rgba(17,19,24,0.22);
+  box-shadow: 0 24px 70px rgba(17,19,24,0.06);
+}
+.task-item.open .task-header__chevron,
+.faq-item.open .faq-icon {
+  background: #111318;
+  color: #FFFFFF;
+}
+.task-step__num {
+  background: transparent;
+  border: 1px solid rgba(17,19,24,0.16);
+  color: #111318;
+}
+.task-step__content h4 { color: #111318; }
+.task-step__content p { color: #716D66; }
+.task-step__location {
+  background: #F7F5F1;
+  border-color: rgba(17,19,24,0.12);
+  color: #68645E;
+}
+.result-box,
+.tip-box {
+  background: #F7F5F1;
+  border-color: rgba(17,19,24,0.10);
+}
+.result-box__text,
+.tip-box { color: #68645E; }
+.tip-box strong { color: #111318; }
+
+/* Prompt boxes */
+.prompt-box {
+  background: #111318;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+}
+.prompt-box__label,
+.prompt-tag {
+  color: #D6D0C6;
+  background: transparent;
+  letter-spacing: 0.18em;
+}
+.prompt-box__text { color: rgba(255,255,255,0.82); }
+.prompt-box__copy {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.16);
+  color: #FFFFFF;
+}
+.prompt-box__copy:hover { background: rgba(255,255,255,0.16); }
+.prompt-guide-card__header { border-bottom-color: rgba(17,19,24,0.08); }
+
+/* Best practice */
+.bp-list__header {
+  background: transparent !important;
+  border-bottom-color: rgba(17,19,24,0.08);
+}
+.bp-list__header h3 { font-weight: 600; }
+.bp-item {
+  color: #68645E;
+  border-bottom-color: rgba(17,19,24,0.07);
+}
+.bp-item__icon {
+  background: transparent !important;
+  border: 1px solid rgba(17,19,24,0.14);
+  color: #111318 !important;
+}
+
+/* FAQ */
+.faq-q { color: #111318; }
+.faq-a { color: #68645E; border-top-color: rgba(17,19,24,0.08); }
+
+/* Closing and footer */
+.closing {
+  background: #111318;
+  padding: 132px 0;
+}
+.closing::before {
+  background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.08), transparent 52%);
+}
+.closing h2 {
+  color: #FFFFFF;
+  font-size: clamp(2.1rem, 4.5vw, 4.7rem);
+  font-weight: 540;
+}
+.closing p { color: rgba(255,255,255,0.62); }
+.footer {
+  background: #0B0D12;
+  border-top-color: rgba(255,255,255,0.08);
+}
+.footer__copy,
+.footer__links a { color: rgba(255,255,255,0.46); }
+.footer__links a:hover { color: rgba(255,255,255,0.86); }
+
+/* Mobile refinements */
+@media (max-width: 768px) {
+  .section { padding: 86px 0; }
+  h2 { font-size: clamp(1.9rem, 9vw, 3.1rem); }
+  .section-header { margin-bottom: 46px; }
+  .intro__grid { gap: 46px; }
+  .navbar__inner { height: 64px; }
+  .module-card, .task-header { padding-left: 22px; padding-right: 22px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ========================= NAVBAR ========================= -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar__inner">
+      <a href="#" class="navbar__logo">
+        <div class="navbar__logo-icon">✦</div>
+        AI Learning
+      </a>
+      <div class="navbar__links">
+        <a href="#intro">Tentang Panduan</a>
+        <a href="#modules">Modul</a>
+        <a href="#usecases">Panduan Langkah</a>
+        <a href="#prompting">Cara Prompting</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a href="#modules" class="navbar__cta">Mulai Belajar →</a>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#intro" onclick="closeMobileMenu()">Tentang Panduan</a>
+  <a href="#modules" onclick="closeMobileMenu()">Modul</a>
+  <a href="#usecases" onclick="closeMobileMenu()">Panduan Langkah</a>
+  <a href="#prompting" onclick="closeMobileMenu()">Cara Prompting</a>
+  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <a href="#modules" onclick="closeMobileMenu()" style="color:var(--cyan-400);font-weight:700;">→ Mulai Belajar</a>
+</div>
+
+<!-- ========================= HERO ========================= -->
+<section class="hero" id="hero">
+  <div class="hero__stage" id="heroStage">
+    <!--
+      Replace these image URLs with your own files anytime.
+      Example: assets/hero/hero-01.jpg, assets/hero/hero-02.jpg, etc.
+    -->
+    <div class="hero__ring" id="heroRing" aria-hidden="true">
+      <figure class="hero__tile" data-index="0">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=420&q=80" alt="AI learning visual 01" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="1">
+        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=420&q=80" alt="AI learning visual 02" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="2">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=420&q=80" alt="AI learning visual 03" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="3">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=420&q=80" alt="AI learning visual 04" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="4">
+        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=420&q=80" alt="AI learning visual 05" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="5">
+        <img src="https://images.unsplash.com/photo-1506765515384-028b60a970df?w=420&q=80" alt="AI learning visual 06" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="6">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=420&q=80" alt="AI learning visual 07" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="7">
+        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=420&q=80" alt="AI learning visual 08" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="8">
+        <img src="https://images.unsplash.com/photo-1500485035595-cbe6f645feb1?w=420&q=80" alt="AI learning visual 09" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="9">
+        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&q=80" alt="AI learning visual 10" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="10">
+        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=420&q=80" alt="AI learning visual 11" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="11">
+        <img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=420&q=80" alt="AI learning visual 12" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="12">
+        <img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=420&q=80" alt="AI learning visual 13" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="13">
+        <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=420&q=80" alt="AI learning visual 14" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="14">
+        <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=420&q=80" alt="AI learning visual 15" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="15">
+        <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=420&q=80" alt="AI learning visual 16" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="16">
+        <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=420&q=80" alt="AI learning visual 17" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="17">
+        <img src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=420&q=80" alt="AI learning visual 18" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="18">
+        <img src="https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?w=420&q=80" alt="AI learning visual 19" loading="eager" />
+      </figure>
+      <figure class="hero__tile" data-index="19">
+        <img src="https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?w=420&q=80" alt="AI learning visual 20" loading="eager" />
+      </figure>
+    </div>
+
+    <div class="hero__copy hero__copy--intro animate-in">
+      <h1 class="hero__title">Panduan AI &amp; Copilot<br/>untuk Kerja Sehari-hari</h1>
+      <div class="hero__micro">Scroll untuk mulai</div>
+    </div>
+
+    <div class="hero__copy hero__copy--detail">
+      <h2 class="hero__title hero__title--secondary">Pelajari Copilot dengan Lebih Mudah</h2>
+      <p class="hero__subtitle">Gunakan panduan ini untuk memahami modul, contoh prompt, langkah penggunaan, dan praktik terbaik dalam memakai AI sebagai asisten kerja, bukan pengganti manusia.</p>
+      <div class="hero__actions">
+        <a href="#modules" class="hero__button hero__button--dark">Mulai Belajar →</a>
+        <a href="#usecases" class="hero__button hero__button--light">Lihat Panduan</a>
+      </div>
+    </div>
+
+    <a class="hero__scroll" href="#intro">Scroll</a>
+  </div>
+</section>
+
+<!-- ========================= INTRO ========================= -->
+<section class="section" id="intro">
+  <div class="container">
+    <div class="intro__grid">
+      <div class="intro__text reveal">
+        <span class="label">Tentang Panduan Ini</span>
+        <h2>Panduan praktis untuk karyawan yang ingin bekerja lebih efisien</h2>
+        <p>Panduan ini dirancang khusus untuk membantu karyawan menggunakan Microsoft Copilot dalam pekerjaan sehari-hari — mulai dari membalas email, merangkum rapat, hingga membuat itinerary tur dan rincian biaya.</p>
+        <p>Tidak perlu latar belakang teknis. Kamu cukup punya akses ke Outlook, Teams, atau Excel — dan bisa langsung mencoba hari ini.</p>
+        <div class="highlight">
+          <strong>Catatan penting:</strong> AI adalah alat bantu, bukan pengganti keputusan manusia. Selalu baca, periksa, dan sesuaikan hasil Copilot sebelum digunakan atau dikirim ke klien.
+        </div>
+      </div>
+      <div class="intro__cards reveal reveal-delay-2">
+        <div class="intro__card">
+          <div class="intro__card-icon">01</div>
+          <h4>Untuk Siapa?</h4>
+          <p>Semua karyawan yang menggunakan Microsoft 365 — tim operasional, marketing, finance, dan admin.</p>
+        </div>
+        <div class="intro__card">
+          <div class="intro__card-icon">02</div>
+          <h4>Tujuan Panduan</h4>
+          <p>Membantu kamu bekerja lebih cepat dan efisien dengan memanfaatkan fitur Copilot yang sudah tersedia.</p>
+        </div>
+        <div class="intro__card">
+          <div class="intro__card-icon">03</div>
+          <h4>Hemat Waktu Nyata</h4>
+          <p>Setiap tugas bisa menghemat 5–60 menit per hari, tergantung frekuensi penggunaan.</p>
+        </div>
+        <div class="intro__card intro__card--wide">
+          <div class="intro__card-icon">04</div>
+          <h4>AI sebagai Asisten, Bukan Pengganti</h4>
+          <p>Copilot membantu menulis draft, merangkum, dan menghitung — tapi penilaian akhir, akurasi data, dan keputusan tetap ada di tangan kamu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= MODULES ========================= -->
+<section class="section section--alt" id="modules">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">Modul Belajar</span>
+      <h2>Mulai dari level yang sesuai denganmu</h2>
+      <p>Pilih level belajar kamu. Pemula bisa langsung mulai tanpa setup tambahan. Level menengah memerlukan file di OneDrive atau SharePoint.</p>
+    </div>
+
+    <div class="modules__tabs reveal">
+      <button class="modules__tab active" onclick="switchTab('beginner', this)">Pemula</button>
+      <button class="modules__tab" onclick="switchTab('intermediate', this)">Menengah</button>
+    </div>
+
+    <!-- Beginner Panel -->
+    <div class="modules__panel active" id="tab-beginner">
+      <div class="modules__note reveal">
+        <span>Catatan</span>
+        <span>Tidak perlu setup — buka Outlook, Word, atau Teams dan langsung coba hari ini.</span>
+      </div>
+      <div class="modules__grid">
+        <div class="module-card reveal">
+          <div class="module-card__num">TUGAS 01</div>
+          <div class="module-card__app">Outlook</div>
+          <h3>Balas Email Secara Otomatis</h3>
+          <p>Gunakan Copilot untuk men-draft balasan email profesional hanya dari poin-poin singkat yang kamu berikan.</p>
+          <div class="module-card__time">Hemat ~15 menit/email</div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-card__num">TUGAS 02</div>
+          <div class="module-card__app">Outlook</div>
+          <h3>Rangkum Thread Email Panjang</h3>
+          <p>Copilot membaca seluruh thread dan menyajikan ringkasan: siapa tanya apa, apa yang disepakati, apa yang masih pending.</p>
+          <div class="module-card__time">Hemat ~10 menit/thread</div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-card__num">TUGAS 03</div>
+          <div class="module-card__app">Outlook</div>
+          <h3>Terjemahkan Inquiry & Buat Balasan</h3>
+          <p>Baca email berbahasa Jepang, Korea, atau China — lalu buat balasan profesional dalam Bahasa Inggris sekaligus.</p>
+          <div class="module-card__time">Hemat ~20 menit</div>
+        </div>
+        <div class="module-card reveal">
+          <div class="module-card__num">TUGAS 04</div>
+          <div class="module-card__app">Outlook</div>
+          <h3>Perbaiki Nada & Gaya Penulisan</h3>
+          <p>Tulis draft bebas dalam bahasa apa pun, lalu minta Copilot untuk menulis ulang dengan nada yang lebih profesional atau ramah.</p>
+          <div class="module-card__time">Hemat 5–10 menit</div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-card__num">TUGAS 05</div>
+          <div class="module-card__app">Teams</div>
+          <h3>Rekap Rapat & Daftar Tindakan</h3>
+          <p>Setelah rapat Teams berakhir, minta Copilot untuk mendaftar semua action item, keputusan, dan poin utama secara otomatis.</p>
+          <div class="module-card__time">Hemat ~20 menit</div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-card__num">TUGAS 06</div>
+          <div class="module-card__app">Outlook</div>
+          <h3>Tulis Permintaan Booking ke Supplier</h3>
+          <p>Berikan detail hotel, tanggal, dan jumlah tamu — Copilot menyusun email permintaan booking yang profesional dalam hitungan detik.</p>
+          <div class="module-card__time">Hemat ~10 menit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intermediate Panel -->
+    <div class="modules__panel" id="tab-intermediate">
+      <div class="modules__note reveal">
+        <span>Catatan</span>
+        <span>File kamu harus sudah ada di OneDrive atau SharePoint terlebih dahulu sebelum menggunakan tugas di level ini.</span>
+      </div>
+      <div class="modules__grid">
+        <div class="module-card reveal">
+          <div class="module-card__num">TUGAS 01</div>
+          <div class="module-card__app">Excel</div>
+          <h3>Bandingkan Harga Hotel dari Berbagai Sumber</h3>
+          <p>Tempel data harga hotel ke Excel, lalu minta Copilot untuk mengurutkan, menandai, dan membandingkan opsi terbaik secara otomatis.</p>
+          <div class="module-card__time">Hemat ~20 menit</div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-card__num">TUGAS 02</div>
+          <div class="module-card__app">Copilot Chat</div>
+          <h3>Buat Draft Itinerary Tur</h3>
+          <p>Berikan detail grup, destinasi, dan minat wisata — Copilot membuat draf itinerary lengkap dalam format tabel yang siap diedit.</p>
+          <div class="module-card__time">Hemat 1–2 jam</div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-card__num">TUGAS 03</div>
+          <div class="module-card__app">Excel</div>
+          <h3>Buat Rincian Biaya Per Pax</h3>
+          <p>Dari sheet biaya dasar, Copilot menambahkan formula total, biaya per pax, harga jual dengan margin, dan menandai item mahal.</p>
+          <div class="module-card__time">Hemat ~30 menit</div>
+        </div>
+        <div class="module-card reveal">
+          <div class="module-card__num">TUGAS 04</div>
+          <div class="module-card__app">M365 Copilot</div>
+          <h3>Cari Info dari Email & File Lama</h3>
+          <p>Copilot mencari sekaligus di Outlook, Teams, dan OneDrive untuk menemukan data yang kamu butuhkan tanpa harus buka satu per satu.</p>
+          <div class="module-card__time">Hemat ~15 menit</div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-card__num">TUGAS 05</div>
+          <div class="module-card__app">Copilot Studio</div>
+          <h3>Bangun Hotel Knowledge Agent</h3>
+          <p>Buat agen khusus yang bisa menjawab pertanyaan tim tentang hotel — harga, fasilitas, kontak — langsung dari file OneDrive kamu.</p>
+          <div class="module-card__time">Setup 2–4 jam (sekali)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= USE CASES (STEP BY STEP) ========================= -->
+<section class="section" id="usecases">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label label--cyan">Panduan Langkah demi Langkah</span>
+      <h2>Cara menggunakan Copilot — langkah per langkah</h2>
+      <p>Klik setiap tugas untuk melihat panduan lengkap, lokasi tombol, contoh prompt, dan hasil yang bisa diharapkan.</p>
+    </div>
+
+    <!-- BEGINNER TASKS -->
+    <div class="usecases__level">
+      <div class="usecases__level-title">
+        <span class="usecases__level-badge usecases__level-badge--beginner">Pemula</span>
+        <div class="usecases__level-line"></div>
+      </div>
+
+      <!-- Task 1 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">01</div>
+          <div class="task-header__meta">
+            <h3>Balas Email Secara Otomatis</h3>
+            <div class="task-header__app">Outlook · Hemat ~15 menit per email</div>
+          </div>
+          <div class="task-header__time">⏱ ~15 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Buka email yang ingin kamu balas</h4>
+                <p>Di Outlook, klik email dari travel agent atau klien yang perlu dibalas.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Temukan tombol Copilot</h4>
+                <div class="task-step__location"> Buka email → Klik Reply → Cari ikon ✦ Copilot di toolbar → Klik "Draft with Copilot"</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Ketik apa yang ingin kamu sampaikan</h4>
+                <p>Tidak perlu menulis email lengkap — cukup berikan poin utamanya ke Copilot.</p>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Contoh prompt</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Konfirmasi bahwa kami sudah menerima inquiry mereka.
+Tanyakan tanggal perjalanan, jumlah tamu, dan
+kisaran budget. Gunakan bahasa yang profesional
+dan ramah.</div>
+                </div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">4</div>
+              <div class="task-step__content">
+                <h4>Review dan kirim</h4>
+                <p>Copilot menulis email lengkapnya. Baca, edit nama atau detail jika perlu, lalu klik Kirim.</p>
+              </div>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box__icon"></div>
+            <div class="result-box__text"><strong>Hasilnya:</strong> Email balasan profesional siap dalam 10 detik, bukan 10 menit.</div>
+          </div>
+          <div class="tip-box"><strong>Tips:</strong> Jika ikon Copilot tidak terlihat, klik tiga titik (...) di toolbar reply — mungkin tersembunyi di sana.</div>
+        </div>
+      </div>
+
+      <!-- Task 2 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">02</div>
+          <div class="task-header__meta">
+            <h3>Rangkum Thread Email yang Panjang</h3>
+            <div class="task-header__app">Outlook · Hemat ~10 menit per thread</div>
+          </div>
+          <div class="task-header__time">⏱ ~10 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Buka thread email yang panjang</h4>
+                <p>Paling efektif untuk thread dengan 5+ email bolak-balik.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Klik tombol rangkuman Copilot</h4>
+                <div class="task-step__location"> Buka thread → Bagian atas email: banner "Summary by Copilot" → Klik — atau klik ✦ Copilot di toolbar</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Tanyakan hal lanjutan jika perlu</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Contoh prompt lanjutan</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Apa yang sudah disetujui klien dalam thread ini?
+Apa yang masih belum dikonfirmasi?
+Hotel apa yang akhirnya mereka pilih?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box__icon"></div>
+            <div class="result-box__text"><strong>Hasilnya:</strong> Ringkasan poin penting dari seluruh thread — siapa yang tanya apa, apa yang sudah disepakati, apa yang masih pending.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 3 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">03</div>
+          <div class="task-header__meta">
+            <h3>Terjemahkan Inquiry & Buat Balasan</h3>
+            <div class="task-header__app">Outlook · Hemat ~20 menit</div>
+          </div>
+          <div class="task-header__time">⏱ ~20 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Buka email berbahasa asing</h4>
+                <p>Dari agen Jepang, Korea, China, atau bahasa lainnya.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Buka sidebar Copilot</h4>
+                <div class="task-step__location"> Toolbar Outlook → Klik ✦ Copilot (kanan atas) → Sidebar terbuka di kanan</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Masukkan prompt ini ke Copilot</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Tempel ke sidebar Copilot</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Terjemahkan email yang sedang saya baca. Lalu buat
+balasan profesional dalam Bahasa Inggris yang
+mengkonfirmasi bahwa kami sudah menerima inquiry,
+dan tanyakan: tanggal perjalanan, jumlah tamu,
+preferensi kategori hotel, dan total budget.</div>
+                </div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">4</div>
+              <div class="task-step__content">
+                <h4>Salin draft → tempel ke reply email</h4>
+                <p>Copilot menulis terjemahan dan balasan sekaligus. Salin teks balasan dan tempel ke jendela compose email.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box"><strong>Tips:</strong> Jika ingin balasan dalam bahasa klien juga, tambahkan: <em>"Buat juga versi balasan dalam Bahasa Jepang."</em></div>
+        </div>
+      </div>
+
+      <!-- Task 4 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">04</div>
+          <div class="task-header__meta">
+            <h3>Perbaiki Nada & Gaya Penulisan Email</h3>
+            <div class="task-header__app">Outlook · Hemat 5–10 menit</div>
+          </div>
+          <div class="task-header__time">⏱ 5–10 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Tulis draft email kamu dulu</h4>
+                <p>Tulis sesuka kamu — catatan singkat, kalimat pendek, bahkan dalam Bahasa Indonesia. Tidak perlu sempurna.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Pilih semua teks → buka Copilot</h4>
+                <div class="task-step__location"> Pilih teks di email → Klik kanan → "Rewrite with Copilot" ATAU Klik ✦ Coaching by Copilot di toolbar</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Pilih nada atau beri instruksi</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Pilihan nada yang bisa dicoba</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Buat lebih profesional dan formal.
+Buat lebih hangat dan ramah.
+Persingkat — pertahankan hanya poin utamanya.
+Tulis ulang dalam Bahasa Inggris yang jelas dan mudah dipahami.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 5 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">05</div>
+          <div class="task-header__meta">
+            <h3>Dapatkan Rekap Rapat & Daftar Tindakan</h3>
+            <div class="task-header__app">Teams · Hemat ~20 menit</div>
+          </div>
+          <div class="task-header__time">⏱ ~20 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Setelah rapat Teams selesai</h4>
+                <p>Copilot bekerja pada rapat yang direkam ATAU rapat live dengan transkripsi aktif.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Buka rekap rapat di Teams</h4>
+                <div class="task-step__location"> Kalender Teams → Klik rapat yang sudah lewat → Tab "Recap" → Klik ✦ Copilot</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Tanyakan apa yang kamu butuhkan</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Prompt yang berguna</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Daftarkan semua action item dari rapat ini.
+Hotel apa yang kita sepakati untuk dimasukkan ke dalam program?
+Apa keputusan tentang kedatangan grup di Hari 1?
+Rangkum poin utama dalam 5 bullet point.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box"><strong>Sebelum rapat:</strong> Pastikan "Record &amp; Transcribe" diaktifkan di awal rapat — tanpa ini, Copilot tidak punya bahan untuk dibaca.</div>
+        </div>
+      </div>
+
+      <!-- Task 6 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">06</div>
+          <div class="task-header__meta">
+            <h3>Tulis Permintaan Booking ke Supplier</h3>
+            <div class="task-header__app">Outlook · Hemat ~10 menit</div>
+          </div>
+          <div class="task-header__time">⏱ ~10 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Mulai email baru ke hotel atau supplier</h4>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Buka Copilot di jendela compose</h4>
+                <div class="task-step__location"> Compose email baru → Toolbar → ✦ Draft with Copilot</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Berikan semua detailnya</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Contoh prompt — edit dengan detail kamu</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Tulis permintaan booking ke hotel.
+
+Detail:
+- Hotel: The Layar Seminyak
+- Grup: 22 pax, semua dewasa
+- Tanggal: 14–18 Agustus 2025
+- Tipe kamar: Deluxe dengan sarapan
+- Butuh: konfirmasi ketersediaan dan harga terbaik untuk grup
+- Nada: profesional</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box"><strong>Tips:</strong> Semakin banyak detail yang kamu berikan, semakin baik hasilnya. Selalu sertakan: nama hotel, tanggal, jumlah pax, tipe kamar, dan apa yang kamu butuhkan dari mereka.</div>
+        </div>
+      </div>
+    </div><!-- end beginner -->
+
+    <!-- INTERMEDIATE TASKS -->
+    <div class="usecases__level">
+      <div class="usecases__level-title">
+        <span class="usecases__level-badge usecases__level-badge--intermediate">Menengah</span>
+        <div class="usecases__level-line"></div>
+      </div>
+
+      <!-- Task 7 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">01</div>
+          <div class="task-header__meta">
+            <h3>Bandingkan Harga Hotel dari Berbagai Sumber</h3>
+            <div class="task-header__app">Excel · Hemat ~20 menit</div>
+          </div>
+          <div class="task-header__time">⏱ ~20 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Tempel semua harga hotel ke satu sheet Excel</h4>
+                <p>Kolom: Nama Hotel, Tipe Kamar, Harga/Malam, Fasilitas, Sumber (Booking.com / Kontrak). Satu hotel = satu baris.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Buka Copilot di Excel</h4>
+                <div class="task-step__location"> Toolbar Excel → Tab Home → Tombol ✦ Copilot (kanan atas) → Sidebar terbuka</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Minta Copilot untuk membandingkan dan mengurutkan</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Ketik ke sidebar Copilot (satu per satu)</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Urutkan hotel berdasarkan Harga/Malam dari termurah ke termahal.
+Tambahkan kolom yang menunjukkan hotel mana yang sudah termasuk sarapan.
+Tandai 3 hotel termurah yang sudah include sarapan.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box__icon"></div>
+            <div class="result-box__text"><strong>Hasilnya:</strong> Tabel perbandingan yang sudah diurutkan dan ditandai. Kamu bisa melihat opsi terbaik dalam hitungan detik — tanpa sortir manual.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 8 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">02</div>
+          <div class="task-header__meta">
+            <h3>Buat Draft Itinerary Tur</h3>
+            <div class="task-header__app">Copilot Chat · Hemat 1–2 jam</div>
+          </div>
+          <div class="task-header__time">⏱ 1–2 jam</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Buka Microsoft Copilot Chat</h4>
+                <div class="task-step__location"> Buka copilot.microsoft.com ATAU Teams → sidebar kiri → aplikasi Copilot ATAU Halaman Microsoft 365 → Copilot</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Ketik prompt yang detail</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Prompt itinerary — edit sesuai grupmu</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Buat itinerary tur Bali 5 hari untuk grup 20 orang dewasa dari Australia. Budget menengah.
+Minat: budaya, sawah, makanan lokal.
+
+Hari 1–2: Area Ubud
+Hari 3: Transfer ke Seminyak
+Hari 4–5: Seminyak dan pantai
+
+Untuk setiap hari sertakan:
+- Aktivitas pagi
+- Saran makan siang
+- Aktivitas sore
+- Saran makan malam
+- Kategori hotel (bintang 3 atau 4)
+
+Format sebagai tabel.</div>
+                </div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Salin hasil → tempel ke Word</h4>
+                <p>Ganti nama hotel generik dengan properti yang sudah kamu kontrak. Sesuaikan waktu dan tambahkan info transfer.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box"><strong>Penting:</strong> Copilot memberikan itinerary generik — kamu harus mengganti hotel dan aktivitas dengan supplier kontrak yang sebenarnya sebelum dikirim ke klien.</div>
+        </div>
+      </div>
+
+      <!-- Task 9 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">03</div>
+          <div class="task-header__meta">
+            <h3>Buat Rincian Biaya Per Pax</h3>
+            <div class="task-header__app">Excel · Hemat ~30 menit</div>
+          </div>
+          <div class="task-header__time">⏱ ~30 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Buat sheet Excel baru dengan item biaya</h4>
+                <p>Kolom: Item, Biaya Satuan (USD), Qty, Total. Baris: Hotel (per malam), Aktivitas, Transport, Guide, Makan, dll.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Buka Copilot di Excel dan minta kalkulasi</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Prompt yang digunakan secara berurutan</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Tambahkan kolom Total = Biaya Satuan × Qty.
+Tambahkan baris di bagian bawah: Total Biaya Program.
+Tambahkan kolom baru: Biaya per Pax (bagi Total dengan 20).
+Tambahkan kolom Harga Jual = Biaya per Pax × 1.25 (margin 25%).
+Tandai item yang Biaya per Pax-nya lebih dari $50.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box__icon"></div>
+            <div class="result-box__text"><strong>Hasilnya:</strong> Sheet biaya lengkap dengan rincian per pax dan harga jual — tidak perlu menulis formula manual.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 10 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">04</div>
+          <div class="task-header__meta">
+            <h3>Cari Info dari Email & File Lama</h3>
+            <div class="task-header__app">M365 Copilot (berbayar) · Hemat ~15 menit</div>
+          </div>
+          <div class="task-header__time">⏱ ~15 menit</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Buka Microsoft 365 Copilot Chat</h4>
+                <div class="task-step__location"> microsoft365.com → Klik ✦ Copilot ATAU Teams → aplikasi Copilot di sidebar</div>
+                <p style="margin-top:6px;font-size:0.82rem;color:var(--text-muted);"><strong>Catatan:</strong> Fitur ini membutuhkan lisensi M365 Copilot (add-on berbayar). Copilot Chat biasa di copilot.microsoft.com TIDAK bisa mencari email kamu.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Minta Copilot untuk mencari di seluruh data kerjamu</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Contoh prompt pencarian</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Temukan semua email tentang grup Tanaka dari Jepang dalam 3 bulan terakhir.
+Hotel apa yang kita booking untuk grup incentive Singapura di bulan September?
+Temukan rate sheet untuk The Layar yang saya simpan ke OneDrive minggu lalu.
+Apa itinerary final yang kita kirim ke PT Lotus Travel di bulan Oktober?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="result-box">
+            <div class="result-box__icon"></div>
+            <div class="result-box__text"><strong>Hasilnya:</strong> Copilot mencari sekaligus di Outlook, Teams, dan OneDrive — dan menampilkan info yang relevan lengkap dengan link sumber.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 11 -->
+      <div class="task-item reveal">
+        <div class="task-header" onclick="toggleTask(this)">
+          <div class="task-header__num">05</div>
+          <div class="task-header__meta">
+            <h3>Tanya Hotel Knowledge Agent</h3>
+            <div class="task-header__app">Copilot Studio (lisensi khusus) · Setup 2–4 jam sekali</div>
+          </div>
+          <div class="task-header__time">Setup 2–4 jam</div>
+          <div class="task-header__chevron">▾</div>
+        </div>
+        <div class="task-body">
+          <div class="task-steps">
+            <div class="task-step">
+              <div class="task-step__num">1</div>
+              <div class="task-step__content">
+                <h4>Prasyarat: file hotel harus ada di SharePoint/OneDrive</h4>
+                <p>Siapkan file Excel per hotel: Nama Hotel, Area, Tipe Kamar, Rate/Malam, Fasilitas, Kontak Langsung, Catatan.</p>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">2</div>
+              <div class="task-step__content">
+                <h4>Bangun agent di Copilot Studio (setup sekali)</h4>
+                <div class="task-step__location"> copilotstudio.microsoft.com → Create Agent → Add Knowledge → SharePoint folder → Publish to Teams</div>
+              </div>
+            </div>
+            <div class="task-step">
+              <div class="task-step__num">3</div>
+              <div class="task-step__content">
+                <h4>Setelah aktif — tim bisa bertanya langsung di Teams</h4>
+                <div class="prompt-box">
+                  <div class="prompt-box__label">Pertanyaan yang bisa diajukan tim</div>
+                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+                  <div class="prompt-box__text">Cari hotel bintang 4 di Seminyak untuk 10 pax, di bawah $90/malam, Juli, dengan sarapan.
+Hotel mana di Ubud yang ada kolam renang dan bisa terima grup lebih dari 20 pax?
+Apa kontak langsung untuk Villa Tjitrap di Canggu?
+Hotel mana yang punya blackout di bulan Agustus?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box"><strong>Ingat:</strong> Agent hanya tahu apa yang ada di file kamu. Jaga folder OneDrive tetap update — rate kadaluarsa = jawaban yang salah.</div>
+        </div>
+      </div>
+    </div><!-- end intermediate -->
+  </div>
+</section>
+
+<!-- ========================= PROMPTING GUIDE ========================= -->
+<section class="section section--alt" id="prompting">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">Panduan Prompting</span>
+      <h2>Cara menulis prompt yang efektif</h2>
+      <p>Kualitas prompt yang kamu tulis sangat menentukan kualitas hasil Copilot. Berikut tips dan contoh berdasarkan tugas-tugas nyata.</p>
+    </div>
+
+    <div class="prompt-guide__grid reveal">
+      <div class="prompt-guide-card">
+        <div class="prompt-guide-card__header">
+          <span class="prompt-tag">EMAIL</span>
+          <h4>Balas inquiry dengan poin spesifik</h4>
+        </div>
+        <div class="prompt-guide-card__body">
+          <div class="prompt-box">
+            <div class="prompt-box__label">Contoh prompt efektif</div>
+            <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+            <div class="prompt-box__text">Konfirmasi bahwa kami sudah menerima inquiry mereka.
+Tanyakan tanggal perjalanan, jumlah tamu, dan
+kisaran budget. Gunakan bahasa profesional dan ramah.</div>
+          </div>
+        </div>
+      </div>
+      <div class="prompt-guide-card">
+        <div class="prompt-guide-card__header">
+          <span class="prompt-tag">ITINERARY</span>
+          <h4>Buat itinerary dengan konteks lengkap</h4>
+        </div>
+        <div class="prompt-guide-card__body">
+          <div class="prompt-box">
+            <div class="prompt-box__label">Contoh prompt efektif</div>
+            <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+            <div class="prompt-box__text">Buat itinerary Bali 5 hari, 20 pax dewasa, Australia.
+Minat: budaya, sawah, kuliner lokal.
+Sertakan aktivitas pagi/sore, makan siang/malam, hotel bintang 3–4.
+Format: tabel.</div>
+          </div>
+        </div>
+      </div>
+      <div class="prompt-guide-card">
+        <div class="prompt-guide-card__header">
+          <span class="prompt-tag">BOOKING</span>
+          <h4>Permintaan booking ke supplier</h4>
+        </div>
+        <div class="prompt-guide-card__body">
+          <div class="prompt-box">
+            <div class="prompt-box__label">Contoh prompt efektif</div>
+            <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+            <div class="prompt-box__text">Tulis email booking ke The Layar Seminyak.
+22 pax dewasa, 14–18 Agustus 2025, Deluxe + sarapan.
+Minta konfirmasi ketersediaan dan harga grup. Nada profesional.</div>
+          </div>
+        </div>
+      </div>
+      <div class="prompt-guide-card">
+        <div class="prompt-guide-card__header">
+          <span class="prompt-tag">EXCEL</span>
+          <h4>Kalkulasi biaya per pax dengan margin</h4>
+        </div>
+        <div class="prompt-guide-card__body">
+          <div class="prompt-box">
+            <div class="prompt-box__label">Contoh prompt efektif</div>
+            <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
+            <div class="prompt-box__text">Tambahkan kolom Total = Biaya Satuan × Qty.
+Tambahkan kolom Biaya per Pax (bagi total dengan 20).
+Tambahkan Harga Jual = Biaya per Pax × 1.25.
+Tandai baris yang lebih dari $50.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="text-align:center;margin-bottom:24px;" class="reveal">Tips Menulis Prompt yang Baik</h3>
+    <div class="prompt-tips-grid">
+      <div class="prompt-tip-item reveal">
+        <div class="prompt-tip-item__icon">01</div>
+        <h4>Berikan konteks yang jelas</h4>
+        <p>Sebutkan siapa audiensnya, apa tujuannya, dan nada apa yang diinginkan sebelum memberikan instruksi utama.</p>
+      </div>
+      <div class="prompt-tip-item reveal reveal-delay-1">
+        <div class="prompt-tip-item__icon">02</div>
+        <h4>Gunakan format yang diminta</h4>
+        <p>Tambahkan "Format sebagai tabel", "Tulis dalam poin", atau "Buat dalam 3 paragraf" agar hasil lebih mudah digunakan.</p>
+      </div>
+      <div class="prompt-tip-item reveal reveal-delay-2">
+        <div class="prompt-tip-item__icon">03</div>
+        <h4>Sertakan detail angka & fakta</h4>
+        <p>Misalnya: jumlah pax, tanggal spesifik, budget range, tipe kamar. Semakin spesifik prompt, semakin relevan hasilnya.</p>
+      </div>
+      <div class="prompt-tip-item reveal">
+        <div class="prompt-tip-item__icon">04</div>
+        <h4>Iterasi jika hasilnya kurang tepat</h4>
+        <p>Jika hasil pertama belum sempurna, perbaiki dengan menambahkan detail atau instruksi yang lebih spesifik.</p>
+      </div>
+      <div class="prompt-tip-item reveal reveal-delay-1">
+        <div class="prompt-tip-item__icon">05</div>
+        <h4>Selalu review hasilnya</h4>
+        <p>Copilot bisa salah pada nama, angka, atau detail spesifik. Verifikasi semua data penting sebelum dikirim ke klien.</p>
+      </div>
+      <div class="prompt-tip-item reveal reveal-delay-2">
+        <div class="prompt-tip-item__icon">06</div>
+        <h4>Tentukan bahasa yang diinginkan</h4>
+        <p>Tambahkan "Tulis dalam Bahasa Inggris" atau "Buat versi Bahasa Indonesia juga" agar output sesuai kebutuhan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= BEST PRACTICES ========================= -->
+<section class="section" id="best-practices">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label label--cyan">Panduan Penggunaan</span>
+      <h2>Yang perlu diperhatikan saat pakai Copilot</h2>
+      <p>Tips ini membantu kamu mendapatkan hasil terbaik dan menghindari kesalahan umum.</p>
+    </div>
+    <div class="best-practices__grid reveal">
+      <div class="bp-list bp-list--do">
+        <div class="bp-list__header">
+          <span style="font-size:1.2rem"></span>
+          <h3 style="color:var(--gray-900)">Lakukan Ini</h3>
+        </div>
+        <div class="bp-list__items">
+          <div class="bp-item">
+            <div class="bp-item__icon">✓</div>
+            <span>Selalu baca dan periksa hasil Copilot sebelum dikirim ke klien atau disimpan sebagai dokumen resmi.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✓</div>
+            <span>Berikan detail lengkap dalam prompt: nama, tanggal, jumlah orang, tipe produk, dan tujuan penulisan.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✓</div>
+            <span>Aktifkan "Record &amp; Transcribe" di awal rapat Teams agar Copilot punya bahan untuk dirangkum.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✓</div>
+            <span>Ganti nama hotel atau supplier generik dari itinerary Copilot dengan kontrak yang sebenarnya.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✓</div>
+            <span>Update file OneDrive secara berkala agar Copilot Studio agent selalu punya data yang akurat.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✓</div>
+            <span>Iterasi prompt jika hasil pertama belum sesuai — coba perbaiki dengan instruksi yang lebih spesifik.</span>
+          </div>
+        </div>
+      </div>
+      <div class="bp-list bp-list--dont">
+        <div class="bp-list__header">
+          <span style="font-size:1.2rem"></span>
+          <h3 style="color:var(--gray-900)">Hindari Ini</h3>
+        </div>
+        <div class="bp-list__items">
+          <div class="bp-item">
+            <div class="bp-item__icon">✗</div>
+            <span>Jangan langsung kirim email atau dokumen hasil Copilot tanpa membacanya terlebih dahulu.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✗</div>
+            <span>Jangan percaya angka atau harga yang dihasilkan Copilot tanpa memverifikasi dari sumber aslinya.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✗</div>
+            <span>Jangan gunakan itinerary generik dari Copilot langsung ke klien tanpa disesuaikan dengan supplier nyata.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✗</div>
+            <span>Jangan biarkan file di OneDrive kadaluarsa — rate lama yang masih tersimpan bisa menghasilkan jawaban yang salah.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✗</div>
+            <span>Jangan gunakan Copilot Chat biasa (copilot.microsoft.com) untuk mencari email — fitur ini butuh lisensi M365 Copilot.</span>
+          </div>
+          <div class="bp-item">
+            <div class="bp-item__icon">✗</div>
+            <span>Jangan asumsikan Copilot selalu benar — AI bisa membuat kesalahan, terutama pada nama orang, tempat, dan angka spesifik.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FAQ ========================= -->
+<section class="section section--alt" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">FAQ</span>
+      <h2>Pertanyaan yang sering ditanyakan</h2>
+      <p>Jawaban untuk pertanyaan umum seputar penggunaan Copilot di pekerjaan sehari-hari.</p>
+    </div>
+    <div class="faq__list">
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Apakah saya perlu lisensi khusus untuk menggunakan Copilot?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Tergantung fitur yang digunakan. Fitur dasar seperti "Draft with Copilot" dan "Summary by Copilot" di Outlook tersedia di paket Microsoft 365 standar. Namun fitur seperti pencarian email lintas aplikasi (M365 Copilot Chat) dan Copilot Studio memerlukan lisensi add-on berbayar yang terpisah. Hubungi IT atau manajermu untuk mengetahui akses yang sudah tersedia.
+        </div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Di mana saya bisa menemukan tombol Copilot di Outlook?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Saat membuka email dan klik Reply, cari ikon ✦ Copilot di toolbar jendela reply. Jika tidak terlihat, klik tiga titik (...) di toolbar — tombol Copilot mungkin tersembunyi di sana. Untuk membuka sidebar Copilot, klik ikon ✦ Copilot di pojok kanan atas toolbar Outlook.
+        </div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Apakah hasil Copilot selalu akurat dan bisa langsung dikirim?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Tidak selalu. Copilot bisa membuat kesalahan terutama pada nama orang, nama tempat, angka spesifik, atau detail kontrak. Selalu baca dan periksa hasilnya sebelum dikirim ke klien atau dijadikan dokumen resmi. Copilot adalah alat bantu — keputusan dan verifikasi akhir tetap ada di tanganmu.
+        </div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Bagaimana cara mendapatkan rekap rapat Teams menggunakan Copilot?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Setelah rapat selesai, buka Kalender Teams → klik rapat yang sudah lewat → pilih tab "Recap" → klik ✦ Copilot. Penting: fitur ini hanya bekerja jika rapat direkam atau transkripsi diaktifkan saat rapat berlangsung. Pastikan klik "Record &amp; Transcribe" di awal rapat berikutnya.
+        </div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Apa bedanya Copilot Chat biasa dengan M365 Copilot Chat?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Copilot Chat biasa di copilot.microsoft.com adalah versi gratis yang hanya bisa menjawab pertanyaan umum dan tidak bisa mengakses email, kalender, atau file kerjamu. M365 Copilot Chat (yang memerlukan lisensi berbayar) bisa mencari dan mengakses data dari Outlook, Teams, dan OneDrive sekaligus — sangat berguna untuk mencari informasi dari email atau file lama.
+        </div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Copilot di Excel — apakah file harus disimpan di suatu tempat tertentu?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Ya. Untuk menggunakan Copilot di Excel (dan tugas-tugas level menengah lainnya), file harus disimpan di OneDrive atau SharePoint terlebih dahulu — bukan hanya di komputer lokal. Simpan file ke OneDrive sebelum membuka Copilot di Excel agar fitur tersedia.
+        </div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Apakah AI Copilot akan menggantikan pekerjaan saya?
+          <div class="faq-icon">▾</div>
+        </div>
+        <div class="faq-a">
+          Tidak. Copilot dirancang sebagai alat bantu untuk mengerjakan tugas-tugas berulang lebih cepat, bukan untuk menggantikan keahlian dan penilaian manusia. Hubungan dengan klien, keputusan bisnis, verifikasi data, dan kreativitas tetap menjadi tugas manusia. Copilot membantu kamu fokus pada hal-hal yang lebih bernilai dengan menghemat waktu di tugas administratif.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= CLOSING CTA ========================= -->
+<section class="closing" id="closing">
+  <div class="container">
+    <div class="closing__inner">
+      <span class="label reveal" style="margin-bottom:20px;">Mulai Sekarang</span>
+      <h2 class="reveal">Gunakan AI dengan cerdas,<br/>efisien, dan bertanggung jawab</h2>
+      <p class="reveal">Copilot ada untuk membantu kamu bekerja lebih baik — bukan bekerja sendiri. Mulai dari tugas paling sederhana hari ini dan rasakan perbedaannya.</p>
+      <div class="closing__actions reveal">
+        <a href="#usecases" class="btn-primary">Lihat Panduan Langkah →</a>
+        <a href="#prompting" class="btn-secondary">Tips Prompting</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__copy">© 2025 AI Learning Guide — Internal Training. Dibuat untuk karyawan DMC.</div>
+      <div class="footer__links">
+        <a href="#intro">Tentang</a>
+        <a href="#modules">Modul</a>
+        <a href="#faq">FAQ</a>
+        <a href="#usecases">Panduan</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========================= JAVASCRIPT ========================= -->
+<script>
+/* ---------- Mobile menu ---------- */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+/* ---------- Module tabs ---------- */
+function switchTab(level, btn) {
+  document.querySelectorAll('.modules__tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.modules__panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + level).classList.add('active');
+}
+
+/* ---------- Task accordion ---------- */
+function toggleTask(header) {
+  const item = header.closest('.task-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.task-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ---------- FAQ accordion ---------- */
+function toggleFaq(item) {
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ---------- Copy prompt ---------- */
+function copyPrompt(btn) {
+  const text = btn.closest('.prompt-box').querySelector('.prompt-box__text').textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Tersalin';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+}
+
+/* ---------- Scroll reveal ---------- */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ---------- Hero scroll-morph image ring ---------- */
+(function initHeroMorph() {
+  const hero = document.getElementById('hero');
+  const stage = document.getElementById('heroStage');
+  const cards = Array.from(document.querySelectorAll('.hero__tile'));
+  if (!hero || !stage || !cards.length) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const total = cards.length;
+  const scatter = cards.map((_, i) => {
+    const seed = Math.sin(i * 37.719) * 10000;
+    const rand = seed - Math.floor(seed);
+    const seed2 = Math.sin(i * 12.417) * 10000;
+    const rand2 = seed2 - Math.floor(seed2);
+    return {
+      x: (rand - 0.5) * 980,
+      y: (rand2 - 0.5) * 640,
+      r: (rand - 0.5) * 120,
+      s: 0.62,
+      o: 0
+    };
+  });
+
+  let phase = 'scatter';
+  let morphProgress = 0;
+  let targetProgress = 0;
+  let mouseShift = 0;
+  let rafId = null;
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+  const ease = t => 1 - Math.pow(1 - t, 3);
+
+  function getMetrics() {
+    const rect = stage.getBoundingClientRect();
+    const w = rect.width || window.innerWidth;
+    const h = rect.height || window.innerHeight;
+    const mobile = w < 640;
+    return {
+      w,
+      h,
+      mobile,
+      circleRx: mobile ? Math.min(w * 0.42, 190) : Math.min(w * 0.31, 385),
+      circleRy: mobile ? Math.min(h * 0.27, 180) : Math.min(h * 0.30, 268),
+      lineSpacing: mobile ? 48 : 72,
+      bottomRx: mobile ? w * 0.72 : w * 0.58,
+      bottomRy: mobile ? 70 : 132,
+      bottomBaseline: mobile ? h * 0.45 : h * 0.48
+    };
+  }
+
+  function circlePosition(i, m) {
+    const angle = (i / total) * Math.PI * 2 - Math.PI / 2;
+    const x = Math.cos(angle) * m.circleRx;
+    const y = Math.sin(angle) * m.circleRy;
+    const r = (angle * 180 / Math.PI) + 90;
+    return { x, y, r, s: 1, o: 1 };
+  }
+
+  function linePosition(i, m) {
+    const center = (total - 1) / 2;
+    const x = (i - center) * m.lineSpacing;
+    return { x, y: 0, r: 0, s: 0.95, o: 1 };
+  }
+
+  function bottomArcPosition(i, m) {
+    const start = 205 * Math.PI / 180;
+    const end = 335 * Math.PI / 180;
+    const angle = start + (end - start) * (i / (total - 1));
+    const x = Math.cos(angle) * m.bottomRx;
+    const y = m.bottomBaseline + Math.sin(angle) * m.bottomRy;
+    const r = (angle * 180 / Math.PI) - 270;
+    return { x, y, r, s: m.mobile ? 0.84 : 1.02, o: 1 };
+  }
+
+  function blend(a, b, t) {
+    return {
+      x: lerp(a.x, b.x, t),
+      y: lerp(a.y, b.y, t),
+      r: lerp(a.r, b.r, t),
+      s: lerp(a.s, b.s, t),
+      o: lerp(a.o, b.o, t)
+    };
+  }
+
+  function setCard(card, pos, delay = 0) {
+    card.style.opacity = pos.o.toFixed(3);
+    card.style.transition = reduceMotion ? 'none' : `transform 900ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, opacity 700ms ease ${delay}ms`;
+    card.style.transform = `translate3d(${pos.x + mouseShift}px, ${pos.y}px, 0) rotate(${pos.r}deg) scale(${pos.s})`;
+  }
+
+  function paint(immediate = false) {
+    const m = getMetrics();
+    const t = ease(morphProgress);
+    cards.forEach((card, i) => {
+      let base;
+      if (phase === 'scatter') base = scatter[i];
+      else if (phase === 'line') base = linePosition(i, m);
+      else base = circlePosition(i, m);
+      const bottom = bottomArcPosition(i, m);
+      const pos = phase === 'circle' ? blend(base, bottom, t) : base;
+      if (immediate) card.style.transition = 'none';
+      setCard(card, pos, immediate ? 0 : i * 18);
+    });
+    hero.classList.toggle('is-morphed', morphProgress > 0.52);
+  }
+
+  function updateTargetFromScroll() {
+    if (reduceMotion) {
+      targetProgress = 0;
+      return;
+    }
+    const rect = hero.getBoundingClientRect();
+    const range = Math.min(620, window.innerHeight * 0.70);
+    targetProgress = clamp(-rect.top / range, 0, 1);
+  }
+
+  function animate() {
+    morphProgress += (targetProgress - morphProgress) * 0.09;
+    if (Math.abs(targetProgress - morphProgress) < 0.001) morphProgress = targetProgress;
+    paint(true);
+    rafId = requestAnimationFrame(animate);
+  }
+
+  function startIntro() {
+    paint(true);
+    if (reduceMotion) {
+      phase = 'circle';
+      paint(true);
+      return;
+    }
+    setTimeout(() => { phase = 'line'; paint(); }, 180);
+    setTimeout(() => { phase = 'circle'; paint(); }, 1500);
+  }
+
+  stage.addEventListener('mousemove', (e) => {
+    if (reduceMotion || window.innerWidth < 768) return;
+    const rect = stage.getBoundingClientRect();
+    const normalized = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouseShift = normalized * 22;
+  });
+  stage.addEventListener('mouseleave', () => { mouseShift = 0; });
+  window.addEventListener('scroll', updateTargetFromScroll, { passive: true });
+  window.addEventListener('resize', () => { updateTargetFromScroll(); paint(true); });
+
+  startIntro();
+  updateTargetFromScroll();
+  if (!reduceMotion) animate();
+})();
+</script>
+</body>
+</html>
