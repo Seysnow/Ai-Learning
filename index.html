@@ -1449,6 +1449,133 @@ p { color: var(--text-muted); }
   .module-card, .task-header { padding-left: 22px; padding-right: 22px; }
 }
 
+
+
+/* =============================================
+   CLOSING CTA — animated aurora background
+   Adapted from the aurora prompt for this static HTML website.
+   Applies only to the dark CTA section above the footer, not the footer.
+   ============================================= */
+.closing {
+  background: #060814 !important;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.closing::before,
+.closing::after {
+  content: none !important;
+}
+.closing__aurora {
+  position: absolute;
+  inset: -24%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(18, 13, 38, 0.98) 48%, rgba(4, 7, 17, 1) 100%);
+}
+.closing__aurora-base,
+.closing__aurora-depth,
+.closing__aurora-wave {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+.closing__aurora-base {
+  opacity: 0.86;
+  background:
+    radial-gradient(ellipse 900px 460px at 50% 24%, rgba(59, 130, 246, 0.22) 0%, transparent 58%),
+    radial-gradient(ellipse 760px 420px at 82% 34%, rgba(139, 92, 246, 0.24) 0%, transparent 56%),
+    radial-gradient(ellipse 840px 480px at 18% 64%, rgba(15, 23, 42, 0.75) 0%, transparent 64%);
+}
+.closing__aurora-wave--1 {
+  opacity: 0.62;
+  background: radial-gradient(ellipse 820px 560px at 48% 18%, rgba(59, 130, 246, 0.34) 0%, rgba(59, 130, 246, 0.16) 28%, transparent 58%);
+  animation: closingAurora1 10s ease-in-out infinite alternate;
+}
+.closing__aurora-wave--2 {
+  opacity: 0.54;
+  background: radial-gradient(ellipse 640px 430px at 76% 30%, rgba(139, 92, 246, 0.38) 0%, rgba(139, 92, 246, 0.14) 34%, transparent 60%);
+  animation: closingAurora2 8s ease-in-out infinite alternate-reverse;
+}
+.closing__aurora-wave--3 {
+  opacity: 0.40;
+  background: radial-gradient(ellipse 760px 520px at 18% 62%, rgba(236, 72, 153, 0.23) 0%, rgba(236, 72, 153, 0.10) 32%, transparent 60%);
+  animation: closingAurora3 12s ease-in-out infinite alternate;
+}
+.closing__aurora-wave--4 {
+  opacity: 0.30;
+  background: radial-gradient(ellipse 920px 340px at 58% 86%, rgba(34, 197, 94, 0.18) 0%, rgba(34, 197, 94, 0.07) 34%, transparent 62%);
+  animation: closingAurora4 9s ease-in-out infinite alternate-reverse;
+}
+.closing__aurora-depth {
+  z-index: 1;
+  background:
+    radial-gradient(circle at 50% 42%, transparent 0%, rgba(3, 5, 12, 0.12) 48%, rgba(3, 5, 12, 0.50) 100%),
+    linear-gradient(180deg, rgba(3, 5, 12, 0.26) 0%, transparent 34%, rgba(3, 5, 12, 0.58) 100%);
+}
+.closing .container,
+.closing__inner {
+  position: relative;
+  z-index: 2;
+}
+.closing h2 {
+  color: rgba(255,255,255,0.96) !important;
+  text-shadow: 0 22px 70px rgba(0,0,0,0.34);
+}
+.closing p {
+  color: rgba(255,255,255,0.66) !important;
+}
+.closing .label {
+  color: rgba(255,255,255,0.48) !important;
+}
+.closing .label::before {
+  background: rgba(255,255,255,0.42) !important;
+}
+.closing .btn-primary {
+  background: rgba(255,255,255,0.10) !important;
+  color: #fff !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.closing .btn-secondary {
+  background: rgba(255,255,255,0.86) !important;
+  color: #111318 !important;
+  border-color: rgba(255,255,255,0.28) !important;
+}
+
+@keyframes closingAurora1 {
+  0% { transform: translate3d(-100px, -50px, 0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(45px, 28px, 0) rotate(180deg) scale(1.12); }
+  100% { transform: translate3d(110px, -30px, 0) rotate(360deg) scale(0.92); }
+}
+@keyframes closingAurora2 {
+  0% { transform: translate3d(82px, 42px, 0) rotate(45deg) scale(0.86); }
+  50% { transform: translate3d(-32px, -24px, 0) rotate(225deg) scale(1.18); }
+  100% { transform: translate3d(-86px, 62px, 0) rotate(405deg) scale(0.92); }
+}
+@keyframes closingAurora3 {
+  0% { transform: translate3d(-54px, 22px, 0) rotate(90deg) scale(1.08); }
+  50% { transform: translate3d(72px, -38px, 0) rotate(270deg) scale(0.86); }
+  100% { transform: translate3d(-24px, 54px, 0) rotate(450deg) scale(1); }
+}
+@keyframes closingAurora4 {
+  0% { transform: translate3d(34px, -22px, 0) rotate(135deg) scale(0.92); }
+  50% { transform: translate3d(-62px, 12px, 0) rotate(315deg) scale(1.10); }
+  100% { transform: translate3d(42px, -62px, 0) rotate(495deg) scale(0.86); }
+}
+@media (max-width: 768px) {
+  .closing__aurora { inset: -38%; }
+  .closing__aurora-wave--1 { animation-duration: 12s; }
+  .closing__aurora-wave--2 { animation-duration: 10s; }
+  .closing__aurora-wave--3 { animation-duration: 14s; }
+  .closing__aurora-wave--4 { animation-duration: 11s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .closing__aurora-wave { animation: none !important; }
+}
 </style>
 </head>
 <body>
@@ -1462,11 +1589,9 @@ p { color: var(--text-muted); }
         AI Learning
       </a>
       <div class="navbar__links">
-        <a href="#intro">Tentang Panduan</a>
         <a href="#modules">Modul</a>
         <a href="#usecases">Panduan Langkah</a>
         <a href="#prompting">Cara Prompting</a>
-        <a href="#faq">FAQ</a>
       </div>
       <a href="#modules" class="navbar__cta">Mulai Belajar →</a>
       <button class="navbar__hamburger" id="hamburger" aria-label="Menu">
@@ -1476,11 +1601,9 @@ p { color: var(--text-muted); }
   </div>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#intro" onclick="closeMobileMenu()">Tentang Panduan</a>
   <a href="#modules" onclick="closeMobileMenu()">Modul</a>
   <a href="#usecases" onclick="closeMobileMenu()">Panduan Langkah</a>
   <a href="#prompting" onclick="closeMobileMenu()">Cara Prompting</a>
-  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
   <a href="#modules" onclick="closeMobileMenu()" style="color:var(--cyan-400);font-weight:700;">→ Mulai Belajar</a>
 </div>
 
@@ -1568,46 +1691,7 @@ p { color: var(--text-muted); }
       </div>
     </div>
 
-    <a class="hero__scroll" href="#intro">Scroll</a>
-  </div>
-</section>
-
-<!-- ========================= INTRO ========================= -->
-<section class="section" id="intro">
-  <div class="container">
-    <div class="intro__grid">
-      <div class="intro__text reveal">
-        <span class="label">Tentang Panduan Ini</span>
-        <h2>Panduan praktis untuk karyawan yang ingin bekerja lebih efisien</h2>
-        <p>Panduan ini dirancang khusus untuk membantu karyawan menggunakan Microsoft Copilot dalam pekerjaan sehari-hari — mulai dari membalas email, merangkum rapat, hingga membuat itinerary tur dan rincian biaya.</p>
-        <p>Tidak perlu latar belakang teknis. Kamu cukup punya akses ke Outlook, Teams, atau Excel — dan bisa langsung mencoba hari ini.</p>
-        <div class="highlight">
-          <strong>Catatan penting:</strong> AI adalah alat bantu, bukan pengganti keputusan manusia. Selalu baca, periksa, dan sesuaikan hasil Copilot sebelum digunakan atau dikirim ke klien.
-        </div>
-      </div>
-      <div class="intro__cards reveal reveal-delay-2">
-        <div class="intro__card">
-          <div class="intro__card-icon">01</div>
-          <h4>Untuk Siapa?</h4>
-          <p>Semua karyawan yang menggunakan Microsoft 365 — tim operasional, marketing, finance, dan admin.</p>
-        </div>
-        <div class="intro__card">
-          <div class="intro__card-icon">02</div>
-          <h4>Tujuan Panduan</h4>
-          <p>Membantu kamu bekerja lebih cepat dan efisien dengan memanfaatkan fitur Copilot yang sudah tersedia.</p>
-        </div>
-        <div class="intro__card">
-          <div class="intro__card-icon">03</div>
-          <h4>Hemat Waktu Nyata</h4>
-          <p>Setiap tugas bisa menghemat 5–60 menit per hari, tergantung frekuensi penggunaan.</p>
-        </div>
-        <div class="intro__card intro__card--wide">
-          <div class="intro__card-icon">04</div>
-          <h4>AI sebagai Asisten, Bukan Pengganti</h4>
-          <p>Copilot membantu menulis draft, merangkum, dan menghitung — tapi penilaian akhir, akurasi data, dan keputusan tetap ada di tangan kamu.</p>
-        </div>
-      </div>
-    </div>
+    <a class="hero__scroll" href="#modules">Scroll</a>
   </div>
 </section>
 
@@ -1683,37 +1767,21 @@ p { color: var(--text-muted); }
         <span>Catatan</span>
         <span>File kamu harus sudah ada di OneDrive atau SharePoint terlebih dahulu sebelum menggunakan tugas di level ini.</span>
       </div>
-      <div class="modules__grid">
-        <div class="module-card reveal">
+      <div class="modules__grid">        <div class="module-card reveal reveal-delay-1">
           <div class="module-card__num">TUGAS 01</div>
-          <div class="module-card__app">Excel</div>
-          <h3>Bandingkan Harga Hotel dari Berbagai Sumber</h3>
-          <p>Tempel data harga hotel ke Excel, lalu minta Copilot untuk mengurutkan, menandai, dan membandingkan opsi terbaik secara otomatis.</p>
-          <div class="module-card__time">Hemat ~20 menit</div>
-        </div>
-        <div class="module-card reveal reveal-delay-1">
-          <div class="module-card__num">TUGAS 02</div>
           <div class="module-card__app">Copilot Chat</div>
           <h3>Buat Draft Itinerary Tur</h3>
           <p>Berikan detail grup, destinasi, dan minat wisata — Copilot membuat draf itinerary lengkap dalam format tabel yang siap diedit.</p>
           <div class="module-card__time">Hemat 1–2 jam</div>
-        </div>
-        <div class="module-card reveal reveal-delay-2">
-          <div class="module-card__num">TUGAS 03</div>
-          <div class="module-card__app">Excel</div>
-          <h3>Buat Rincian Biaya Per Pax</h3>
-          <p>Dari sheet biaya dasar, Copilot menambahkan formula total, biaya per pax, harga jual dengan margin, dan menandai item mahal.</p>
-          <div class="module-card__time">Hemat ~30 menit</div>
-        </div>
-        <div class="module-card reveal">
-          <div class="module-card__num">TUGAS 04</div>
+        </div>        <div class="module-card reveal">
+          <div class="module-card__num">TUGAS 02</div>
           <div class="module-card__app">M365 Copilot</div>
           <h3>Cari Info dari Email & File Lama</h3>
           <p>Copilot mencari sekaligus di Outlook, Teams, dan OneDrive untuk menemukan data yang kamu butuhkan tanpa harus buka satu per satu.</p>
           <div class="module-card__time">Hemat ~15 menit</div>
         </div>
         <div class="module-card reveal reveal-delay-1">
-          <div class="module-card__num">TUGAS 05</div>
+          <div class="module-card__num">TUGAS 03</div>
           <div class="module-card__app">Copilot Studio</div>
           <h3>Bangun Hotel Knowledge Agent</h3>
           <p>Buat agen khusus yang bisa menjawab pertanyaan tim tentang hotel — harga, fasilitas, kontak — langsung dari file OneDrive kamu.</p>
@@ -2049,58 +2117,10 @@ Detail:
         <div class="usecases__level-line"></div>
       </div>
 
-      <!-- Task 7 -->
+      <!-- Task 1 -->
       <div class="task-item reveal">
         <div class="task-header" onclick="toggleTask(this)">
           <div class="task-header__num">01</div>
-          <div class="task-header__meta">
-            <h3>Bandingkan Harga Hotel dari Berbagai Sumber</h3>
-            <div class="task-header__app">Excel · Hemat ~20 menit</div>
-          </div>
-          <div class="task-header__time">⏱ ~20 menit</div>
-          <div class="task-header__chevron">▾</div>
-        </div>
-        <div class="task-body">
-          <div class="task-steps">
-            <div class="task-step">
-              <div class="task-step__num">1</div>
-              <div class="task-step__content">
-                <h4>Tempel semua harga hotel ke satu sheet Excel</h4>
-                <p>Kolom: Nama Hotel, Tipe Kamar, Harga/Malam, Fasilitas, Sumber (Booking.com / Kontrak). Satu hotel = satu baris.</p>
-              </div>
-            </div>
-            <div class="task-step">
-              <div class="task-step__num">2</div>
-              <div class="task-step__content">
-                <h4>Buka Copilot di Excel</h4>
-                <div class="task-step__location"> Toolbar Excel → Tab Home → Tombol ✦ Copilot (kanan atas) → Sidebar terbuka</div>
-              </div>
-            </div>
-            <div class="task-step">
-              <div class="task-step__num">3</div>
-              <div class="task-step__content">
-                <h4>Minta Copilot untuk membandingkan dan mengurutkan</h4>
-                <div class="prompt-box">
-                  <div class="prompt-box__label">Ketik ke sidebar Copilot (satu per satu)</div>
-                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
-                  <div class="prompt-box__text">Urutkan hotel berdasarkan Harga/Malam dari termurah ke termahal.
-Tambahkan kolom yang menunjukkan hotel mana yang sudah termasuk sarapan.
-Tandai 3 hotel termurah yang sudah include sarapan.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-box">
-            <div class="result-box__icon"></div>
-            <div class="result-box__text"><strong>Hasilnya:</strong> Tabel perbandingan yang sudah diurutkan dan ditandai. Kamu bisa melihat opsi terbaik dalam hitungan detik — tanpa sortir manual.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Task 8 -->
-      <div class="task-item reveal">
-        <div class="task-header" onclick="toggleTask(this)">
-          <div class="task-header__num">02</div>
           <div class="task-header__meta">
             <h3>Buat Draft Itinerary Tur</h3>
             <div class="task-header__app">Copilot Chat · Hemat 1–2 jam</div>
@@ -2154,53 +2174,10 @@ Format sebagai tabel.</div>
         </div>
       </div>
 
-      <!-- Task 9 -->
+      <!-- Task 2 -->
       <div class="task-item reveal">
         <div class="task-header" onclick="toggleTask(this)">
-          <div class="task-header__num">03</div>
-          <div class="task-header__meta">
-            <h3>Buat Rincian Biaya Per Pax</h3>
-            <div class="task-header__app">Excel · Hemat ~30 menit</div>
-          </div>
-          <div class="task-header__time">⏱ ~30 menit</div>
-          <div class="task-header__chevron">▾</div>
-        </div>
-        <div class="task-body">
-          <div class="task-steps">
-            <div class="task-step">
-              <div class="task-step__num">1</div>
-              <div class="task-step__content">
-                <h4>Buat sheet Excel baru dengan item biaya</h4>
-                <p>Kolom: Item, Biaya Satuan (USD), Qty, Total. Baris: Hotel (per malam), Aktivitas, Transport, Guide, Makan, dll.</p>
-              </div>
-            </div>
-            <div class="task-step">
-              <div class="task-step__num">2</div>
-              <div class="task-step__content">
-                <h4>Buka Copilot di Excel dan minta kalkulasi</h4>
-                <div class="prompt-box">
-                  <div class="prompt-box__label">Prompt yang digunakan secara berurutan</div>
-                  <button class="prompt-box__copy" onclick="copyPrompt(this)">Salin</button>
-                  <div class="prompt-box__text">Tambahkan kolom Total = Biaya Satuan × Qty.
-Tambahkan baris di bagian bawah: Total Biaya Program.
-Tambahkan kolom baru: Biaya per Pax (bagi Total dengan 20).
-Tambahkan kolom Harga Jual = Biaya per Pax × 1.25 (margin 25%).
-Tandai item yang Biaya per Pax-nya lebih dari $50.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-box">
-            <div class="result-box__icon"></div>
-            <div class="result-box__text"><strong>Hasilnya:</strong> Sheet biaya lengkap dengan rincian per pax dan harga jual — tidak perlu menulis formula manual.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Task 10 -->
-      <div class="task-item reveal">
-        <div class="task-header" onclick="toggleTask(this)">
-          <div class="task-header__num">04</div>
+          <div class="task-header__num">02</div>
           <div class="task-header__meta">
             <h3>Cari Info dari Email & File Lama</h3>
             <div class="task-header__app">M365 Copilot (berbayar) · Hemat ~15 menit</div>
@@ -2240,10 +2217,10 @@ Apa itinerary final yang kita kirim ke PT Lotus Travel di bulan Oktober?</div>
         </div>
       </div>
 
-      <!-- Task 11 -->
+      <!-- Task 3 -->
       <div class="task-item reveal">
         <div class="task-header" onclick="toggleTask(this)">
-          <div class="task-header__num">05</div>
+          <div class="task-header__num">03</div>
           <div class="task-header__meta">
             <h3>Tanya Hotel Knowledge Agent</h3>
             <div class="task-header__app">Copilot Studio (lisensi khusus) · Setup 2–4 jam sekali</div>
@@ -2399,169 +2376,24 @@ Tandai baris yang lebih dari $50.</div>
   </div>
 </section>
 
-<!-- ========================= BEST PRACTICES ========================= -->
-<section class="section" id="best-practices">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="label label--cyan">Panduan Penggunaan</span>
-      <h2>Yang perlu diperhatikan saat pakai Copilot</h2>
-      <p>Tips ini membantu kamu mendapatkan hasil terbaik dan menghindari kesalahan umum.</p>
-    </div>
-    <div class="best-practices__grid reveal">
-      <div class="bp-list bp-list--do">
-        <div class="bp-list__header">
-          <span style="font-size:1.2rem"></span>
-          <h3 style="color:var(--gray-900)">Lakukan Ini</h3>
-        </div>
-        <div class="bp-list__items">
-          <div class="bp-item">
-            <div class="bp-item__icon">✓</div>
-            <span>Selalu baca dan periksa hasil Copilot sebelum dikirim ke klien atau disimpan sebagai dokumen resmi.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✓</div>
-            <span>Berikan detail lengkap dalam prompt: nama, tanggal, jumlah orang, tipe produk, dan tujuan penulisan.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✓</div>
-            <span>Aktifkan "Record &amp; Transcribe" di awal rapat Teams agar Copilot punya bahan untuk dirangkum.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✓</div>
-            <span>Ganti nama hotel atau supplier generik dari itinerary Copilot dengan kontrak yang sebenarnya.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✓</div>
-            <span>Update file OneDrive secara berkala agar Copilot Studio agent selalu punya data yang akurat.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✓</div>
-            <span>Iterasi prompt jika hasil pertama belum sesuai — coba perbaiki dengan instruksi yang lebih spesifik.</span>
-          </div>
-        </div>
-      </div>
-      <div class="bp-list bp-list--dont">
-        <div class="bp-list__header">
-          <span style="font-size:1.2rem"></span>
-          <h3 style="color:var(--gray-900)">Hindari Ini</h3>
-        </div>
-        <div class="bp-list__items">
-          <div class="bp-item">
-            <div class="bp-item__icon">✗</div>
-            <span>Jangan langsung kirim email atau dokumen hasil Copilot tanpa membacanya terlebih dahulu.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✗</div>
-            <span>Jangan percaya angka atau harga yang dihasilkan Copilot tanpa memverifikasi dari sumber aslinya.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✗</div>
-            <span>Jangan gunakan itinerary generik dari Copilot langsung ke klien tanpa disesuaikan dengan supplier nyata.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✗</div>
-            <span>Jangan biarkan file di OneDrive kadaluarsa — rate lama yang masih tersimpan bisa menghasilkan jawaban yang salah.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✗</div>
-            <span>Jangan gunakan Copilot Chat biasa (copilot.microsoft.com) untuk mencari email — fitur ini butuh lisensi M365 Copilot.</span>
-          </div>
-          <div class="bp-item">
-            <div class="bp-item__icon">✗</div>
-            <span>Jangan asumsikan Copilot selalu benar — AI bisa membuat kesalahan, terutama pada nama orang, tempat, dan angka spesifik.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= FAQ ========================= -->
-<section class="section section--alt" id="faq">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="label">FAQ</span>
-      <h2>Pertanyaan yang sering ditanyakan</h2>
-      <p>Jawaban untuk pertanyaan umum seputar penggunaan Copilot di pekerjaan sehari-hari.</p>
-    </div>
-    <div class="faq__list">
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Apakah saya perlu lisensi khusus untuk menggunakan Copilot?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Tergantung fitur yang digunakan. Fitur dasar seperti "Draft with Copilot" dan "Summary by Copilot" di Outlook tersedia di paket Microsoft 365 standar. Namun fitur seperti pencarian email lintas aplikasi (M365 Copilot Chat) dan Copilot Studio memerlukan lisensi add-on berbayar yang terpisah. Hubungi IT atau manajermu untuk mengetahui akses yang sudah tersedia.
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Di mana saya bisa menemukan tombol Copilot di Outlook?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Saat membuka email dan klik Reply, cari ikon ✦ Copilot di toolbar jendela reply. Jika tidak terlihat, klik tiga titik (...) di toolbar — tombol Copilot mungkin tersembunyi di sana. Untuk membuka sidebar Copilot, klik ikon ✦ Copilot di pojok kanan atas toolbar Outlook.
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Apakah hasil Copilot selalu akurat dan bisa langsung dikirim?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Tidak selalu. Copilot bisa membuat kesalahan terutama pada nama orang, nama tempat, angka spesifik, atau detail kontrak. Selalu baca dan periksa hasilnya sebelum dikirim ke klien atau dijadikan dokumen resmi. Copilot adalah alat bantu — keputusan dan verifikasi akhir tetap ada di tanganmu.
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Bagaimana cara mendapatkan rekap rapat Teams menggunakan Copilot?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Setelah rapat selesai, buka Kalender Teams → klik rapat yang sudah lewat → pilih tab "Recap" → klik ✦ Copilot. Penting: fitur ini hanya bekerja jika rapat direkam atau transkripsi diaktifkan saat rapat berlangsung. Pastikan klik "Record &amp; Transcribe" di awal rapat berikutnya.
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Apa bedanya Copilot Chat biasa dengan M365 Copilot Chat?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Copilot Chat biasa di copilot.microsoft.com adalah versi gratis yang hanya bisa menjawab pertanyaan umum dan tidak bisa mengakses email, kalender, atau file kerjamu. M365 Copilot Chat (yang memerlukan lisensi berbayar) bisa mencari dan mengakses data dari Outlook, Teams, dan OneDrive sekaligus — sangat berguna untuk mencari informasi dari email atau file lama.
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Copilot di Excel — apakah file harus disimpan di suatu tempat tertentu?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Ya. Untuk menggunakan Copilot di Excel (dan tugas-tugas level menengah lainnya), file harus disimpan di OneDrive atau SharePoint terlebih dahulu — bukan hanya di komputer lokal. Simpan file ke OneDrive sebelum membuka Copilot di Excel agar fitur tersedia.
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          Apakah AI Copilot akan menggantikan pekerjaan saya?
-          <div class="faq-icon">▾</div>
-        </div>
-        <div class="faq-a">
-          Tidak. Copilot dirancang sebagai alat bantu untuk mengerjakan tugas-tugas berulang lebih cepat, bukan untuk menggantikan keahlian dan penilaian manusia. Hubungan dengan klien, keputusan bisnis, verifikasi data, dan kreativitas tetap menjadi tugas manusia. Copilot membantu kamu fokus pada hal-hal yang lebih bernilai dengan menghemat waktu di tugas administratif.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ========================= CLOSING CTA ========================= -->
 <section class="closing" id="closing">
+  <div class="closing__aurora" aria-hidden="true">
+    <div class="closing__aurora-base"></div>
+    <div class="closing__aurora-wave closing__aurora-wave--1"></div>
+    <div class="closing__aurora-wave closing__aurora-wave--2"></div>
+    <div class="closing__aurora-wave closing__aurora-wave--3"></div>
+    <div class="closing__aurora-wave closing__aurora-wave--4"></div>
+    <div class="closing__aurora-depth"></div>
+  </div>
   <div class="container">
     <div class="closing__inner">
-      <span class="label reveal" style="margin-bottom:20px;">Mulai Sekarang</span>
-      <h2 class="reveal">Gunakan AI dengan cerdas,<br/>efisien, dan bertanggung jawab</h2>
-      <p class="reveal">Copilot ada untuk membantu kamu bekerja lebih baik — bukan bekerja sendiri. Mulai dari tugas paling sederhana hari ini dan rasakan perbedaannya.</p>
+      <span class="label reveal" style="margin-bottom:20px;">Butuh Bantuan?</span>
+      <h2 class="reveal">Butuh bantuan memakai AI?<br/>Kami siap mendampingi</h2>
+      <p class="reveal">Jika ada pertanyaan, butuh arahan penggunaan, atau ingin menyesuaikan prompt dengan kebutuhan kerja, hubungi kami melalui WhatsApp.</p>
       <div class="closing__actions reveal">
-        <a href="#usecases" class="btn-primary">Lihat Panduan Langkah →</a>
-        <a href="#prompting" class="btn-secondary">Tips Prompting</a>
+        <a href="https://wa.me/6285156945398?text=Halo%20tim%20AI%20Learning%2C%20saya%20perlu%20bantuan%20terkait%20penggunaan%20Copilot%20dan%20panduan%20AI." target="_blank" rel="noopener noreferrer" class="btn-primary">Hubungi via WhatsApp →</a>
+        <a href="#modules" class="btn-secondary">Kembali ke Modul</a>
       </div>
     </div>
   </div>
@@ -2575,7 +2407,6 @@ Tandai baris yang lebih dari $50.</div>
       <div class="footer__links">
         <a href="#intro">Tentang</a>
         <a href="#modules">Modul</a>
-        <a href="#faq">FAQ</a>
         <a href="#usecases">Panduan</a>
       </div>
     </div>
